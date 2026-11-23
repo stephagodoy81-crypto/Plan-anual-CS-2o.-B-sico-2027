@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Anual Interactivo - Colegio Montano</title>
+    <style>
+        :root {
+            --azul-principal: #1F3C88;
+            --azul-secundario: #3F72AF;
+            --blanco: #FFFFFF;
+            --amarillo-acento: #F2C94C;
+            --gris-fondo: #F4F6F9;
+            --texto-oscuro: #2C3E50;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--gris-fondo);
+            color: var(--texto-oscuro);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Barra Superior / Topbar */
+        .topbar {
+            background-color: var(--azul-principal);
+            color: var(--blanco);
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-montano {
+            max-height: 50px;
+            width: auto;
+        }
+
+        .header-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            font-style: italic;
+            color: var(--amarillo-acento);
+        }
+
+        .header-sub {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--blanco);
+        }
+
+        .fullscreen-btn {
+            background-color: var(--amarillo-acento);
+            color: var(--azul-principal);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-style: italic;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .fullscreen-btn:hover {
+            background-color: #e5b83b;
+            transform: translateY(-2px);
+        }
+
+        /* Navegación por Pestañas Horizontales */
+        .tabs-container {
+            background-color: var(--azul-secundario);
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            box-shadow: inset 0 -2px 4px rgba(0,0,0,0.1);
+        }
+
+        .tab-button {
+            background-color: transparent;
+            color: var(--blanco);
+            border: none;
+            padding: 14px 22px;
+            font-size: 0.95rem;
+            font-style: italic;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            border-bottom: 4px solid transparent;
+        }
+
+        .tab-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-button.active {
+            background-color: var(--blanco);
+            color: var(--azul-principal);
+            border-bottom: 4px solid var(--amarillo-acento);
+            font-weight: bold;
+        }
+
+        /* Contenido Principal */
+        .main-content {
+            padding: 30px;
+            flex-grow: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tarjetas de Contenido */
+        .card {
+            background-color: var(--blanco);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 6px solid var(--azul-principal);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .card-header-title {
+            color: var(--azul-principal);
+            font-size: 1.4rem;
+            font-style: italic;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--gris-fondo);
+            padding-bottom: 8px;
+        }
+
+        .card-subtitle {
+            color: var(--azul-secundario);
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        p, li {
+            line-height: 1.6;
+            font-size: 0.98rem;
+            color: var(--texto-oscuro);
+        }
+
+        ul, ol {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Listas y rejillas estilizadas */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .grid-box {
+            background-color: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 6px;
+            padding: 18px;
+            border-top: 4px solid var(--azul-secundario);
+        }
+
+        .grid-box-cm {
+            border-top: 4px solid var(--amarillo-acento);
+            background-color: #FFFDF5;
+        }
+
+        .grid-box-title {
+            font-weight: bold;
+            font-style: italic;
+            color: var(--azul-principal);
+            margin-bottom: 8px;
+        }
+
+        .unit-badge {
+            display: inline-block;
+            background-color: var(--azul-principal);
+            color: var(--blanco);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-style: italic;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+
+        /* Resaltado de texto */
+        .highlight {
+            background-color: rgba(242, 201, 76, 0.3);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-style: italic;
+        }
+
+        /* Adaptabilidad */
+        @media (max-width: 768px) {
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .fullscreen-btn {
+                align-self: flex-end;
+            }
+            .main-content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra Superior / Topbar -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <img src="https://admisiones.colegiomontano.edu.gt/assets/img/logo-cm-blanco.webp" alt="Colegio Montano" class="logo-montano">
+            <div class="header-info">
+                <span class="header-title">Planificación Anual: Ciencias Sociales</span>
+                <span class="header-sub"><i>Grado: Segundo Básico | Docente: Stephany Godoy | Ciclo Escolar: 2027</i></span>
+            </div>
+        </div>
+        <button class="fullscreen-btn" onclick="toggleFullScreen()">
+            🖥️ <i>Pantalla Completa</i>
+        </button>
+    </header>
+
+    <!-- Navegación por Pestañas -->
+    <nav class="tabs-container">
+        <button class="tab-button active" onclick="openTab(event, 'tab1')"><i>I) Descriptor</i></button>
+        <button class="tab-button" onclick="openTab(event, 'tab2')"><i>II) Objetivos</i></button>
+        <button class="tab-button" onclick="openTab(event, 'tab3')"><i>III) Competencias</i></button>
+        <button class="tab-button" onclick="openTab(event, 'tab4')"><i>IV) Indicadores</i></button>
+        <button class="tab-button" onclick="openTab(event, 'tab5')"><i>V) Métodos</i></button>
+        <button class="tab-button" onclick="openTab(event, 'tab6')"><i>VI) Bibliografía</i></button>
+        <button class="tab-button" onclick="openTab(event, 'tab7')"><i>VII) Contenidos</i></button>
+    </nav>
+
+    <!-- Contenido de las Pestañas -->
+    <main class="main-content">
+
+        <!-- Pestaña 1: Descriptor -->
+        <section id="tab1" class="tab-content active">
+            <div class="card">
+                <h2 class="card-header-title"><i>I) Descriptor del Curso</i></h2>
+                <p><i>El área de Ciencias Sociales y Formación Ciudadana, por las diferentes perspectivas que adopta, su interdependencia con otras áreas, y su potencialidad para explicar a la sociedad en su conjunto, provee los elementos necesarios para comprender las interrelaciones entre individuos, grupos, instituciones, Pueblos, esferas y aspectos de la vida social. Contribuye a la comprensión del contexto sociocultural de vida por medio del conocimiento histórico-social. Propicia las relaciones intra e interculturales, la empatía, la valoración y el respeto por la diversidad cultural, multiétnica y plurilingüe de la nación guatemalteca.</i></p>
+                <br>
+                <p><i>Coadyuva a la participación proactiva, eficiente, eficaz y con autodeterminación de las y los ciudadanos del siglo XXI para una convivencia pacífica, democrática e intercultural, orientando a los estudiantes a interactuar libre, crítica y responsablemente en la comunidad, fundamentados en valores y cultura de paz.</i></p>
+                
+                <h3 class="card-subtitle"><i>Valores y Creencias Institucionales Incorporados</i></h3>
+                <ul>
+                    <li><i>Lectura comprensiva en español para el logro del aprendizaje significativo.</i></li>
+                    <li><i>Desarrollo de la expresión oral y escrita con corrección ortográfica y legibilidad.</i></li>
+                    <li><i>Práctica de habilidades sociales, trabajo en equipo, empatía y tolerancia en el aula.</i></li>
+                    <li><i>Promoción de relaciones armónicas intraula fundamentadas en valores.</i></li>
+                    <li><i>Comprensión y respeto por la pluriculturalidad e interculturalidad nacional.</i></li>
+                    <li><i>Desarrollo del pensamiento reflexivo, capacidad de análisis y síntesis.</i></li>
+                    <li><i>Construcción de ideas críticas y propositivas puestas en práctica en la metodología institucional.</i></li>
+                    <li><i>Integración de conocimientos interdisciplinarios a través de la tarea integrada.</i></li>
+                    <li><i>Uso responsable de herramientas digitales y multimedia (MSchool) para la investigación.</i></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Pestaña 2: Objetivos -->
+        <section id="tab2" class="tab-content">
+            <div class="card">
+                <h2 class="card-header-title"><i>II) Objetivos Generales</i></h2>
+                <ol>
+                    <li><i>Reflejar y responder a las características, necesidades y aspiraciones de un país multicultural, multilingüe y multiétnico, reforzando la identidad personal y comunitaria.</i></li>
+                    <li><i>Promover una sólida formación técnica, científica y humanística para el desarrollo personal y nacional.</i></li>
+                    <li><i>Contribuir a la sistematización de la tradición oral de las culturas de la Nación.</i></li>
+                    <li><i>Conocer, rescatar, respetar, promover, crear y recrear las cualidades morales, espirituales, éticas y estéticas de los pueblos guatemaltecos.</i></li>
+                    <li><i>Fortalecer los valores y actitudes de pluralismo, respeto a la vida y a las diferencias individuales y culturales.</i></li>
+                    <li><i>Infundir el respeto y la práctica de los Derechos Humanos, la solidaridad, la vida en democracia y la cultura de paz.</i></li>
+                    <li><i>Formar una actitud crítica, creativa, propositiva y de sensibilidad social ante la realidad pasada y presente.</i></li>
+                    <li><i>Fomentar la apropiación crítica del conocimiento científico e indígena a favor de la conservación ambiental y el desarrollo sostenible.</i></li>
+                    <li><i>Reproducir la multietnicidad del país en la estructura educativa integrando a los cuatro Pueblos guatemaltecos.</i></li>
+                    <li><i>Llevar a la práctica modelos educativos innovadores que respondan a los desafíos de la sociedad actual.</i></li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Pestaña 3: Competencias -->
+        <section id="tab3" class="tab-content">
+            <div class="card">
+                <h2 class="card-header-title"><i>III) Competencias Académicas del Área</i></h2>
+                <ul>
+                    <li><i>Actúa en forma coherente y responsable, interrelacionando elementos, factores y procesos en espacios geográficos y socioculturales, en el marco del desarrollo sustentable.</i></li>
+                    <li><i>Interpreta elementos de cambio y continuidad en procesos sociales vinculados con el presente para la construcción de un proyecto de nación.</i></li>
+                    <li><i>Practica la ciudadanía mediante el liderazgo propositivo y proactivo sustentado en valores y principios.</i></li>
+                    <li><i>Resuelve problemas y desafíos de su vida cotidiana y realidad haciendo uso de la investigación social.</i></li>
+                    <li><i>Explica la situación demográfica y ambiental del continente americano y Guatemala.</i></li>
+                    <li><i>Aplica procedimientos específicos de investigación de determinadas Ciencias Sociales.</i></li>
+                    <li><i>Interpreta el contexto histórico mundial del encuentro entre distintas sociedades de diferentes continentes.</i></li>
+                    <li><i>Asume una actitud incluyente, propositiva y responsable frente a las necesidades de su comunidad.</i></li>
+                </ul>
+
+                <h2 class="card-header-title" style="margin-top: 30px;"><i>Competencias CM (Integración Institucional Fija)</i></h2>
+                <div class="grid-container">
+                    <div class="grid-box grid-box-cm">
+                        <div class="grid-box-title"><i>Pensamiento crítico y resolución de problemas</i></div>
+                        <p><i>Capacidad de descomponer situaciones complejas y evaluar alternativas efectivas.</i></p>
+                    </div>
+                    <div class="grid-box grid-box-cm">
+                        <div class="grid-box-title"><i>Colaboración y trabajo en equipo</i></div>
+                        <p><i>Desarrollo de interacciones con metas compartidas bajo el principio cooperativo.</i></p>
+                    </div>
+                    <div class="grid-box grid-box-cm">
+                        <div class="grid-box-title"><i>Competencias digitales</i></div>
+                        <p><i>Uso de plataformas tecnológicas y recursos multimedia para afianzar el aprendizaje.</i></p>
+                    </div>
+                    <div class="grid-box grid-box-cm">
+                        <div class="grid-box-title"><i>Comunicación efectiva</i></div>
+                        <p><i>Expresión oral y escrita precisa, escucha activa e intercambio asertivo de ideas.</i></p>
+                    </div>
+                    <div class="grid-box grid-box-cm">
+                        <div class="grid-box-title"><i>Creatividad e innovación</i></div>
+                        <p><i>Aplicación de ideas divergentes puestas en práctica para generar soluciones.</i></p>
+                    </div>
+                    <div class="grid-box grid-box-cm">
+                        <div class="grid-box-title"><i>Aprendizaje autónomo y adaptabilidad</i></div>
+                        <p><i>Capacidad de gestionar el propio conocimiento y ajustarse a diferentes contextos.</i></p>
+                    </div>
+                    <div class="grid-box grid-box-cm">
+                        <div class="grid-box-title"><i>Conciencia global y cultural</i></div>
+                        <p><i>Valoración de la diversidad, la pluriculturalidad y el respeto intercultural.</i></p>
+                    </div>
+                    <div class="grid-box grid-box-cm">
+                        <div class="grid-box-title"><i>Ética y ciudadanía digital</i></div>
+                        <p><i>Manejo responsable de la huella digital, privacidad y prevención del ciberacoso.</i></p>
+                    </div>
+                    <div class="grid-box grid-box-cm">
+                        <div class="grid-box-title"><i>Gestión emocional y resiliencia</i></div>
+                        <p><i>Capacidad de adaptarse y sobreponerse con éxito frente a situaciones adversas.</i></p>
+                    </div>
+                    <div class="grid-box grid-box-cm">
+                        <div class="grid-box-title"><i>Conciencia ecológica y sostenibilidad</i></div>
+                        <p><i>Actitudes enfocadas en la protección del equilibrio ecológico y el medio ambiente.</i></p>
+                    </div>
+                    <div class="grid-box grid-box-cm">
+                        <div class="grid-box-title"><i>Liderazgo e influencia social</i></div>
+                        <p><i>Carisma y habilidad para motivar equipos hacia metas comunes y proyectos colectivos.</i></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pestaña 4: Indicadores de Logro -->
+        <section id="tab4" class="tab-content">
+            <div class="card">
+                <h2 class="card-header-title"><i>IV) Indicadores de Logro</i></h2>
+                <ul>
+                    <li><i>Utiliza los pasos del método de investigación social en la recolección de datos.</i></li>
+                    <li><i>Elabora explicaciones fundamentales y personales sobre lo investigado en fuentes documentales.</i></li>
+                    <li><i>Estructura la información para argumentar a favor de sus puntos de vista en exposiciones coherentes.</i></li>
+                    <li><i>Relaciona el impacto de los asentamientos humanos con el entorno social y natural en América.</i></li>
+                    <li><i>Relaciona las formas de producción, distribución y consumo con el desarrollo y subdesarrollo en América.</i></li>
+                    <li><i>Identifica las acciones humanas que inciden en el medio ambiente del continente americano.</i></li>
+                    <li><i>Contrasta procesos históricos que se desarrollaron en el siglo XIX en Europa y Latinoamérica.</i></li>
+                    <li><i>Analiza la ruptura del orden colonial en los dominios españoles y portugueses.</i></li>
+                    <li><i>Diferencia las etapas del proceso de independencia centroamericana.</i></li>
+                    <li><i>Analiza los cambios en la estructura político-económica generados por las reformas liberales en Guatemala.</i></li>
+                    <li><i>Practica el ejercicio de la democracia en el gobierno estudiantil y su comunidad.</i></li>
+                    <li><i>Analiza las consecuencias de la abstención electoral en los jóvenes y la ausencia de participación ciudadana.</i></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Pestaña 5: Métodos Didácticos -->
+        <section id="tab5" class="tab-content">
+            <div class="card">
+                <h2 class="card-header-title"><i>V) Métodos Didácticos Institucionales (Contenido Fijo CM)</i></h2>
+                <p><i>Se aplica el modelo activo-colaborativo centrado en el enfoque constructivista y el desarrollo de competencias mediante la estructura del Período Doble (70 minutos).</i></p>
+                <br>
+                <div class="grid-container">
+                    <div class="grid-box">
+                        <div class="grid-box-title"><i>1. Introducción Motivante</i></div>
+                        <p><i>Activación de presaberes mediante dinamizaciones, juegos, lluvias de ideas o preguntas detonantes para diagnosticar el punto de partida del estudiante.</i></p>
+                    </div>
+                    <div class="grid-box">
+                        <div class="grid-box-title"><i>2. Trabajo Individual</i></div>
+                        <p><i>Desarrollo de la potencialidad individual, habilidades y destrezas mediante tareas guiadas, trifolios, guías de estudio y proyectos personales.</i></p>
+                    </div>
+                    <div class="grid-box">
+                        <div class="grid-box-title"><i>3. Trabajo en Equipo</i></div>
+                        <p><i>Trabajo cooperativo con asignación de roles definidos, promoviendo la interdependencia bajo la consigna "Todos para uno y uno para todos".</i></p>
+                    </div>
+                    <div class="grid-box">
+                        <div class="grid-box-title"><i>4. Plenaria</i></div>
+                        <p><i>Exposición pública rotativa, diálogo socrático, socialización de conclusiones y consolidación del aprendizaje significativo.</i></p>
+                    </div>
+                </div>
+
+                <h3 class="card-subtitle" style="margin-top: 25px;"><i>Metodologías Clave y Evaluación</i></h3>
+                <ul>
+                    <li><i><strong>Aprendizaje Basado en Proyectos (ABP) y Constructivismo:</strong> Construcción activa del conocimiento orientado a resolver problemas reales del entorno social.</i></li>
+                    <li><i><strong>Evaluación Formativa:</strong> Observación continua del desempeño y habilidades durante los cuatro momentos de clase.</i></li>
+                    <li><i><strong>Evaluación Sumativa:</strong> Organizada en tareas, ejercicios, pruebas cortas, tarea integrada y proyecto final de área.</i></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Pestaña 6: Bibliografía -->
+        <section id="tab6" class="tab-content">
+            <div class="card">
+                <h2 class="card-header-title"><i>VI) Bibliografía y Fuentes de Referencia</i></h2>
+                <ul>
+                    <li><i>Malla Curricular del Nivel Medio, Primer y Segundo Grado - Currículo Nacional Base (CNB), Ministerio de Educación de Guatemala.</i></li>
+                    <li><i>Texto: Ciencias Sociales 8, Editorial Susaeta S.A., Edición 2018.</i></li>
+                    <li><i>Recursos Didácticos y Plataformas Digitales: Materiales de Google Académico y MSchool Colegio Montano.</i></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Pestaña 7: Contenidos -->
+        <section id="tab7" class="tab-content">
+            <div class="card">
+                <h2 class="card-header-title"><i>VII) Secuencia Temática por Unidades</i></h2>
+                
+                <div class="unit-badge"><i>Unidad I: Fundamentos de Ciencias Sociales y Geografía Básica</i></div>
+                <ul>
+                    <li><i>Ciencias Sociales: Objeto, utilidad, antropología, sociología e historia.</i></li>
+                    <li><i>Fenómenos sociales, objetividad y subjetividad, pensamiento lógico.</i></li>
+                    <li><i>Investigación social: Metodología, técnicas (observación, encuestas, entrevistas), análisis de fuentes y presentación de informes.</i></li>
+                    <li><i>Geografía física: Sistemas naturales y sociales, organización espacial y política.</i></li>
+                    <li><i>Regiones geográficas de América (Norte, Centro, Sur, Insular) y legislación ambiental.</i></li>
+                </ul>
+
+                <br>
+                <div class="unit-badge"><i>Unidad II: Geografía Humana, Demografía y Procesos Históricos</i></div>
+                <ul>
+                    <li><i>Geografía humana de América: Ubicación, hemisferios y regionalización.</i></li>
+                    <li><i>Desarrollo urbano, planificación, cambios demográficos y dinámicas migratorias.</i></li>
+                    <li><i>Geografía física de América: Relieve, hidrografía, climas y regiones naturales.</i></li>
+                    <li><i>Demografía y economía de Guatemala: Sectores productivos, comercio y bloques de integración regional (SICA, MERCOSUR, USMCA).</i></li>
+                    <li><i>Contexto histórico: Monarquía, absolutismo, Revolución Francesa e Industrial.</i></li>
+                </ul>
+
+                <br>
+                <div class="unit-badge"><i>Unidad III: Historia de América y Centroamérica en el Siglo XIX</i></div>
+                <ul>
+                    <li><i>Civilizaciones originarias de América: Mayas, Mexicas e Incas (cosmovisión, organización y aportes).</i></li>
+                    <li><i>Encuentro de culturas: Intercambio biológico y cultural, resistencia indígena.</i></li>
+                    <li><i>Independencia de Centroamérica: Causas internas/externas, actores principales, anexión a México.</i></li>
+                    <li><i>República Federal de Centroamérica, Período de los 30 años y Reforma Liberal.</i></li>
+                    <li><i>Economía agroexportadora, monocultivos, indicadores de desarrollo y calidad de vida.</i></li>
+                </ul>
+
+                <br>
+                <div class="unit-badge"><i>Unidad IV: Democracia, Ciudadanía y Cultura de Paz</i></div>
+                <ul>
+                    <li><i>Democracia, Estado, poderes públicos y participación ciudadana.</i></li>
+                    <li><i>Pluralidad cultural, identidad, diálogo y diversidad en Guatemala.</i></li>
+                    <li><i>Modelos económicos y políticos: Libertad económica, neoliberalismo y autoritarismo.</i></li>
+                    <li><i>Ciudadanía y era digital: Huella digital, privacidad, prevención del ciberacoso y juicio crítico ante la información.</i></li>
+                    <li><i>Exclusión social, políticas públicas y Cultura de Paz (resolución y mediación de conflictos).</i></li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    alert(`Error al intentar activar pantalla completa: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
